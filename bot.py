@@ -22,13 +22,13 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 @bot.event
 async def on_ready():
     print(f"✅ Connecté en tant que {bot.user}")
-
+    
     # Changer le statut / description du bot
     await bot.change_presence(activity=discord.Activity(
         type=discord.ActivityType.listening,  # playing, listening, watching, competing
         name="GigaChad Remix"                 # Texte affiché
     ))
-
+    
     try:
         synced = await bot.tree.sync()
         print(f"📝 {len(synced)} commandes slash synchronisées avec succès")
@@ -39,7 +39,7 @@ async def on_ready():
             print(f"⚠️ Erreur HTTP lors de la synchronisation: {e}")
     except Exception as e:
         print(f"⚠️ Erreur lors de la synchronisation des commandes: {e}")
-
+    
     print("🤖 Bot prêt à recevoir les commandes!")
 
 # Slash command /dm avec mentions multiples
@@ -90,13 +90,13 @@ async def ban(interaction: discord.Interaction, mentions: str, raison: str = "Au
             try:
                 user_id = int(mention.replace("<@", "").replace(">", "").replace("!", ""))
                 user = await bot.fetch_user(user_id)
-
+                
                 # Vérifier que le membre n'a pas un rôle supérieur au bot
                 member = interaction.guild.get_member(user.id)
                 if member and member.top_role >= interaction.guild.me.top_role:
                     failed.append(mention)
                     continue
-
+                
                 await interaction.guild.ban(user, reason=raison)
                 success.append(user.name)
             except Exception:
